@@ -6,7 +6,7 @@
 
 1. Lav et nyt expo projekt i din projekt mappe med `expo init 8_maps`og åben projektet i webstorm
 2. Installér følgende dependencies:<br/>
-   `expo install --save react-native-maps expo-constants expo-location
+   `expo install react-native-maps expo-constants expo-location
    `
 3.	Undervejs i løsningen af denne øvelse, skal der bruges fem state variabler. Start med at initialisere følgende variabler ved bruge af useState:
 - hasLocationPermission - Startværdi = `false`
