@@ -58,6 +58,10 @@ Bilag A - getLocationPermission
    await Location.requestForegroundPermissionsAsync().then((item)=>{
    //Sæt din state variabel her. 
    } );
+   
+Bilag B - handleLongPRes
+![image](https://user-images.githubusercontent.com/55731954/137005491-deebf184-2ed9-4bf8-bbb5-68a73eee98d5.png)
+
 
 `
 
