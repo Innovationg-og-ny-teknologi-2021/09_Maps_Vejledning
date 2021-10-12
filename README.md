@@ -8,7 +8,7 @@
 2. Installér følgende dependencies:<br/>
    `expo install react-native-maps expo-constants expo-location
    `
-3.	Undervejs i løsningen af denne øvelse, skal der bruges fem state variabler. Start med at initialisere følgende variabler ved bruge af useState:
+3.	Undervejs i løsningen af denne øvelse, skal der bruges fem state variabler. Start med at initialisere følgende variabler ved brug af useState:
 - hasLocationPermission - Startværdi = `false`
 - currentLocation - Startværdi = `null`
 - userMarkerCoordinates - Startværdi = `[]` (Et tomt array)
@@ -23,19 +23,19 @@ HINT: Ved udfordringer se den officielle dokumentation, https://docs.expo.dev/ve
    HINT: Se dokumentationen her; https://github.com/react-native-maps/react-native-maps/blob/master/docs/marker.md
 6. Forsøg nu at køre app'en. Efter opstart skal du nu blive præsenteret for et kort med tre markeringer. Ved at trykke på markeringen skal der fremvises en titel på stedet og en kort beskrivelse. 
 
-7. Du skal nu sørge for at app'en viser din aktuelle position på kortet. Af denne grund skal app'en efterspørge en tilladelse til at benytte din lokation. Opret derfor metoden, getLocationPermission()
-8. Metoden foretage et asynkront kald, der aktivere en forespørgsel om tilladelse til at bruge din nuværende lokation.
+7. Du skal nu sørge for at appen viser din aktuelle position på kortet. Af denne grund skal appen efterspørge en tilladelse til at benytte din lokation. Opret derfor metoden, getLocationPermission()
+8. Metoden foretager et asynkront kald, der aktiverer en forespørgsel om tilladelse til at bruge din nuværende lokation.
    - Importer en `Location` instans fra expo-location og kald metoden,`requestForegroundPermissionsAsync` på `Location`.<br/>
     HINT: Find inspiration på den officielle vejledning: https://docs.expo.dev/versions/latest/sdk/location/
 9. Sæt state-variablen `hasLocationPermission` til at være resultatet af den returnerede værdi fra det asynkrone kald - Find hjælp i bilag A.
 10. Angiv nu en property i Mapview, som tillader brugeren at se sin nuværende position på kortet. 
-11. Kør app'en og se at det virker 
-12. Opret nu metoden, `handleLongPress`. Metoden skal sørge for at afsætte en markør på det valgte punkt.<br/>HINT: Metoden tager en `event` med som argument. Instantier en variabel ved navn 'coordinate' og angiv dennes værdi som resultatet af `event.nativeEvent.coordinate`
+11. Kør appen og se at det virker 
+12. Opret nu metoden, `handleLongPress`. Metoden skal sørge for at afsætte en markør på det valgte punkt.<br/>HINT: Metoden tager en `event` med som argument. Instantiér en variabel ved navn 'coordinate' og angiv dennes værdi som resultatet af `event.nativeEvent.coordinate`
     - Tilføj koordinaten til arrayet, der skal opbevare en samling af koordinater; `userMarkerCoordinates`.<br/>HINT: Se eksempel på opdatering af state-arrays på følgende link: https://stackoverflow.com/questions/54676966/push-method-in-react-hooks-usestate
-    - Aktiver nu egenskaben `longPress` i `<Mapview/>` og lav en reference til den nyoprettede metode, `handleLongPress`.
-    - Afslutningsvis, skal du sørge for at alle punkter, der findes i `userMarkerCoordinates` bliver bliver placerret på kortet.
-    - Nu skal du kunne sætte markører på kortet ved at foretage længere tryk(longPress) vilkårlige steder på kortet. 
-13. Opret nu metode, `handleSelectMarker` som ved tryk på en markør, registrerer hvilken markør og sætter værdierne for `selectedCoordinate` og `selectedAddress`. 
+    - Aktivér nu egenskaben `longPress` i `<Mapview/>` og lav en reference til den nyoprettede metode, `handleLongPress`.
+    - Afslutningsvis, skal du sørge for at alle punkter, der findes i `userMarkerCoordinates` bliver placerret på kortet.
+    - Nu skal du kunne sætte markører på kortet ved at foretage længere tryk(longPress) vilkårlige steder på kortet i appen. 
+13. Opret nu metoden, `handleSelectMarker` som ved tryk på en markør registrerer, hvilken markør der er trykket på og sætter værdierne for `selectedCoordinate` og `selectedAddress`. 
     - `handleSelectMarker` tager koordinatet fra markøren med som argument. 
     - Selve koordinatsættet kan direkte sættes på baggrund af den medsendte koordinat
     - Dernæst kan oplysningerne forbundet med koordinatsættet findes ved brug af det asynkrone kald, `Location.reverseGeocodeAsync`.<br/>HINT: Se dokumentation på dette ved brug af følgende link, https://docs.expo.dev/versions/latest/sdk/location/  
