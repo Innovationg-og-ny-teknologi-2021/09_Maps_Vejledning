@@ -36,6 +36,7 @@ HINT: Ved udfordringer se den officielle dokumentation, https://docs.expo.dev/ve
     - Aktivér nu egenskaben `longPress` i `<Mapview/>` og lav en reference til den nyoprettede metode, `handleLongPress`.
     - Afslutningsvis, skal du sørge for at alle punkter, der findes i `userMarkerCoordinates` bliver placerret på kortet.
     - Nu skal du kunne sætte markører på kortet ved at foretage længere tryk(longPress) vilkårlige steder på kortet i appen. 
+    - HINT: Se bilag b
 14. Opret nu metoden, `handleSelectMarker` som ved tryk på en markør registrerer, hvilken markør der er trykket på og sætter værdierne for `selectedCoordinate` og `selectedAddress`. 
     - `handleSelectMarker` tager koordinatet fra markøren med som argument. 
     - Selve koordinatsættet kan direkte sættes på baggrund af den medsendte koordinat
@@ -52,17 +53,17 @@ HINT: Ved udfordringer se den officielle dokumentation, https://docs.expo.dev/ve
     
 #### Bilag 
 
-Bilag A - getLocationPermission
-```
-   const getLocationPermission = async () => {
-   await Location.requestForegroundPermissionsAsync().then((item)=>{
+Bilag A - getLocationPermission <br/>
+`
+   const getLocationPermission = async () =>
+   { await Location.requestForegroundPermissionsAsync().then((item)=>{
    //Sæt din state variabel her. 
    } );
-   
+`
+
+
 Bilag B - handleLongPRes
 ![image](https://user-images.githubusercontent.com/55731954/137005491-deebf184-2ed9-4bf8-bbb5-68a73eee98d5.png)
 
-
-`
 
 
