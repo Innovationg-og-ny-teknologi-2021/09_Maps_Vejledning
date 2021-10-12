@@ -62,7 +62,7 @@ Bilag A - getLocationPermission <br/>
 `
 
 
-Bilag B - handleLongPRes
+Bilag B - handleLongPress
 ![image](https://user-images.githubusercontent.com/55731954/137005491-deebf184-2ed9-4bf8-bbb5-68a73eee98d5.png)
 
 
