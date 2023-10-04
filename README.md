@@ -47,8 +47,7 @@ HINT: Ved udfordringer se den officielle dokumentation, https://docs.expo.dev/ve
 16. Opret nu metoden, `RenderCurrentLocation`, der i `return()` indeholder en `<button/>` samt en en tekstboks, der udskriver koordinatsættet for din nuværende position, men kun hvis `currentLocation` har fået fastsat en værdi. <br/>Husk på at `currentLocation` i udgangspunktet er værdisat til `null`, hvorfor der i udgangspunktet kun returneres et `<button/>` fra `RenderCurrentLocation`.
     - Dernæst oprettes metoden, `updateLocation`, som opfanger enhedens position ved brug af det asynkrone kald `Location.getCurrentPositionAsync`.
     - Resultatet af det asynkrone kald, benyttes til at sætte værdien for `currentLocation`.<br/>HINT: Se dokumentationen fra punkt 8.
-    
-
+17. BONUS - Prøv at lave en function der sletter dine koordinater. Se evt. på dokumentation om hvordan dette gøres.
 
     
 #### Bilag 
