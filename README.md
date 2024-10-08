@@ -7,6 +7,47 @@ https://github.com/react-native-maps/react-native-maps
 
 Dette modul har virkelig mange fede features så gør jer selv en tjeneste og læs dokumentationen! 
 
+Start med at opsætte et nyt projekt som vi har gjort så mange gange før.
+
+Kopiere derefter følgende ind i din `package.json`:
+```json
+"dependencies": {
+    "@react-native-async-storage/async-storage": "^1.19.3",
+    "@react-navigation/bottom-tabs": "^6.6.1",
+    "expo": "~51.0.28",
+    "expo-constants": "~16.0.2",
+    "expo-linear-gradient": "~13.0.2",
+    "expo-location": "~17.0.1",
+    "expo-status-bar": "~1.12.1",
+    "react": "18.2.0",
+    "react-native": "0.74.5",
+    "react-native-maps": "^1.18.0",
+    "react-native-vector-icons": "^10.2.0"
+  },
+```
+
+og kør `npm install`
+
+## OBS ved fejlmelding - 08-10-2024
+
+Der er pt. er problem med Expo som kan skabe problemer: https://github.com/expo/expo/issues/31912
+
+Our favorite Babel skaber problemer... ლ(ಠ益ಠლ)
+
+Hvis du oplever problemer med install - så slet din node-modules og derefter lav dette quickfix:
+
+Quickfix på dette har for nogle været at indsætte følgende i din `package.json`
+```json
+"devDependencies": {
+    "@babel/core": "^7.20.0",
+    "babel-plugin-react-compiler": "0.0.0-experimental-592953e-20240517"
+  },
+```
+
+og så kører `npm install`
+
+Virker dette ikke så må i Google jer frem til en løsning... (╥﹏╥) 
+
 <Br>
 
 # App.js 📲
