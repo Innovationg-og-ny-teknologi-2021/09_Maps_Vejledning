@@ -1,68 +1,392 @@
-# 8_maps_vejledning
+# Maps Vejledning 🗺️
 
-# Øvelsesvejledning til øvelse 8 - Maps
+I dag skal vi arbejde med at få et `react-native-maps` til at virke på en simple app. Start med at læse dokumentationen her: 
 
-#### Slut resultat
+https://docs.expo.dev/versions/latest/sdk/map-view/ <br>
+https://github.com/react-native-maps/react-native-maps
 
-1. Lav et nyt expo projekt i din projekt mappe med `npx create-expo-app 8_maps`og åben projektet i webstorm eller VSC
-2. Installér følgende dependencies:<br/>
-   `npx expo install react-native-maps expo-constants expo-location
-   `
-3.	Undervejs i løsningen af denne øvelse, skal der bruges fem state variabler. Start med at initialisere følgende variabler ved brug af useState:
-- hasLocationPermission - Startværdi = `false`
-- currentLocation - Startværdi = `null`
-- userMarkerCoordinates - Startværdi = `[]` (Et tomt array)
-- selectedCoordinate - Startværdi = `null`
-- selectedAddress - Startværdi = `null`
+Dette modul har virkelig mange fede features så gør jer selv en tjeneste og læs dokumentationen! 
 
-3.	Opret nu et et `<Mapview/>` i return() i app.js.<br/>HUSK: `<Mapview />` skal wrappes ind i et `<SafeAreaView/>`<br/>
-HINT: Ved udfordringer se den officielle dokumentation, https://docs.expo.dev/versions/latest/sdk/map-view/
+<Br>
 
-4. Vælg nu tre vilkårlige steder, du ønsker skal markeres på kortet. Find dernæst latitude & longitude for hver af stederne.
-5. Placer dernæst stederne på kortet, ved brug af `<Marker />`. Forsøg at give hver markering en lille beskrivelse og en titel.<br/>
-   HINT: Se dokumentationen her; https://github.com/react-native-maps/react-native-maps/blob/master/docs/marker.md
-6. Forsøg nu at køre app'en. Efter opstart skal du nu blive præsenteret for et kort med tre markeringer. Ved at trykke på markeringen skal der fremvises en titel på stedet og en kort beskrivelse. 
+# App.js 📲
 
-7. Du skal nu sørge for at appen viser din aktuelle position på kortet. Af denne grund skal appen efterspørge en tilladelse til at benytte din lokation. Opret derfor metoden, getLocationPermission()
-8. Metoden foretager et asynkront kald, der aktiverer en forespørgsel om tilladelse til at bruge din nuværende lokation.
-   - Importer en `Location` instans fra expo-location og kald metoden,`requestForegroundPermissionsAsync` på `Location`.<br/>
-    HINT: Find inspiration på den officielle vejledning: https://docs.expo.dev/versions/latest/sdk/location/
-9. Sæt state-variablen `hasLocationPermission` til at være resultatet af den returnerede værdi fra det asynkrone kald - Find hjælp i bilag A.
-10. Når metoden er lavet, skal denne kaldes i useEffect
-11. Angiv nu en property i Mapview, som tillader brugeren at se sin nuværende position på kortet. 
-12. Kør appen og se at det virker 
-13. Opret nu metoden, `handleLongPress`. Metoden skal sørge for at afsætte en markør på det valgte punkt.<br/>HINT: Metoden tager en `event` med som argument. Instantiér en variabel ved navn 'coordinate' og angiv dennes værdi som resultatet af `event.nativeEvent.coordinate`
-    - Tilføj koordinaten til arrayet, der skal opbevare en samling af koordinater; `userMarkerCoordinates`.<br/>HINT: Se eksempel på opdatering af state-arrays på følgende link: https://stackoverflow.com/questions/54676966/push-method-in-react-hooks-usestate
-    - Aktivér nu egenskaben `longPress` i `<Mapview/>` og lav en reference til den nyoprettede metode, `handleLongPress`.
-    - Afslutningsvis, skal du sørge for at alle punkter, der findes i `userMarkerCoordinates` bliver placerret på kortet.
-    - Nu skal du kunne sætte markører på kortet ved at foretage længere tryk(longPress) vilkårlige steder på kortet i appen. 
-    - HINT: Se bilag b
-14. Opret nu metoden, `handleSelectMarker` som ved tryk på en markør registrerer, hvilken markør der er trykket på og sætter værdierne for `selectedCoordinate` og `selectedAddress`. 
-    - `handleSelectMarker` tager koordinatet fra markøren med som argument. 
-    - Selve koordinatsættet kan direkte sættes på baggrund af den medsendte koordinat
-    - Dernæst kan oplysningerne forbundet med koordinatsættet findes ved brug af det asynkrone kald, `Location.reverseGeocodeAsync`.<br/>HINT: Se dokumentation på dette ved brug af følgende link, https://docs.expo.dev/versions/latest/sdk/location/  
-    - Ud fra resultatet af det asynkrone kald, skal værdien af `selectedAddress` sættes. 
-    - Sørg for at handleSelectMarker påkaldes i onPress på en Markør
-15. Opret nu en Tekstboks, der kun vises ved tryk på en markør og udskriver koordinatsættet(`userMarkerCoordinates`) og dertilhørende adresseoplysninger(`selectedAddress`)
-16. Opret nu metoden, `RenderCurrentLocation`, der i `return()` indeholder en `<button/>` samt en en tekstboks, der udskriver koordinatsættet for din nuværende position, men kun hvis `currentLocation` har fået fastsat en værdi. <br/>Husk på at `currentLocation` i udgangspunktet er værdisat til `null`, hvorfor der i udgangspunktet kun returneres et `<button/>` fra `RenderCurrentLocation`.
-    - Dernæst oprettes metoden, `updateLocation`, som opfanger enhedens position ved brug af det asynkrone kald `Location.getCurrentPositionAsync`.
-    - Resultatet af det asynkrone kald, benyttes til at sætte værdien for `currentLocation`.<br/>HINT: Se dokumentationen fra punkt 8.
-17. BONUS - Prøv at lave en function der sletter dine koordinater. Se evt. på dokumentation om hvordan dette gøres.
+Til start med skal vi lave en TapNavigator til de 2 screens vi skal bruge. 
 
-    
-#### Bilag 
+## Navigation
+I en ny folder kaldt `screens` lav 2 screens:
+- `Home.js`
+- `Map.js`
 
-Bilag A - getLocationPermission <br/>
-`
-   const getLocationPermission = async () =>
-   { await Location.requestForegroundPermissionsAsync().then((item)=>{
-   //Sæt din state variabel her. 
-   } );
-`
+I hver screen indsæt følgende kode (husk at ændre navn osv.):
+```javascript
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
+export default function Home({navigation}) {
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>This is ???</Text>
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#fff', 
+  },
+  text: {
+    fontSize: 24,
+    fontWeight: 'bold',
+  },
+});
 
 
-Bilag B - handleLongPress
-![image](https://user-images.githubusercontent.com/55731954/137005491-deebf184-2ed9-4bf8-bbb5-68a73eee98d5.png)
+```
 
+## App.js
 
+Tilbage i App.js skal vi nu lave vores navigation til disse skræme. Indsæt følgende i din App.js og udfyld de forskellige `???`
 
+```javascript
+export default function App() {
+
+  const Tab = ???();
+
+  return (
+    <???>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarActiveTintColor: '#FF0000',
+          tabBarInactiveTintColor: "gray",
+          tabBarIcon: ({color, size}) => {
+            let iconName;
+
+            if(route.name === 'Home'){
+              iconName = 'home'
+            }else if(route.name === 'Map'){
+              iconName = 'map'
+            }
+
+            return <Ionicons name={iconName} size={size} color={color}/>
+          }
+        })}
+        >
+        <Tab.Screen name="Home" component={???} />
+        <Tab.Screen name="Map" component={???} />
+      </Tab.Navigator>
+    </???>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
+```
+
+Hints:
+- Husk at vi skal deklare vores Bottom Tap Navigator som det første.
+- Husk at vi skal indkapsle vores navigation i en Container
+- Husk at vi skal impotere vores sider og moduler 
+
+Check at din navigation virker og forsæt til Home.js
+
+<Br> </Br>
+
+# Home.js 🏡(❍ᴥ❍ʋ)
+
+Start med at import dine moduler: 
+
+```javascript
+import { StatusBar } from 'expo-status-bar';
+import { StyleSheet, Text, View, Image, TextInput, TouchableOpacity } from 'react-native';
+
+import { LinearGradient } from 'expo-linear-gradient';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useState } from 'react';
+```
+
+<br>
+
+## const
+
+Vi skal nu lave 3 `const` med `useState` som det første i vores export function:
+- `latitude` med et tomt string 
+- `longitude` med et tomt string
+- `markers`med et tomt array
+
+Hint:
+- `const [latitude, setLatitude] = useState('');`
+
+<br>
+
+## addAndSaveMarker 📍
+
+Vi skal nu lave en addAndSaveMarker funktion.
+Denne funktion tilføjer en ny markør til en liste over eksisterende markører og gemmer den opdaterede liste ved hjælp af `AsyncStorage`.
+
+### Trin 1: Opret en ny markør
+
+Start med at oprette en ny markør ved at bruge de aktuelle `latitude` og `longitude` værdier. Disse værdier omdannes til tal ved hjælp af `parseFloat()`.
+
+```javascript
+const newMarker = { latitude: parseFloat(???), longitude: parseFloat(???) };
+```
+
+### Trin 2: Opdater markørlisten
+
+Opdater listen af markører ved at tilføje den nye markør til den eksisterende liste med markører. Brug `setMarkers()` til at opdatere din state.
+
+```javascript
+const updatedMarkers = [...markers, newMarker];
+setMarkers(updatedMarkers);
+```
+
+Når markøren er blevet tilføjet, rydder du inputfelterne for bredde- og længdegrad ved at sætte deres værdier til tomme strenge.
+
+```javascript
+setLatitude('');
+setLongitude('');
+```
+
+### Trin 3: Gem markørerne ved hjælp af AsyncStorage
+
+Nu gemmer du de opdaterede markører (`updatedMarker`) som strings ved hjælp af `AsyncStorage`. Dette gemmer listen af markører permanent på enheden. Brug en `try` - `catch` med `await` function her. Du vil også navigerer brugeren tilbage til kortskærmen ved hjælp af `navigation.navigate()`.
+
+```javascript
+try{
+    await ???.setItem('markers', JSON.stringify(???));
+    navigation.navigate('???');
+} catch (error) {
+    console.error('Error saving markers', error);
+}
+```
+<Br>
+
+## return
+
+Indsæt først din styling under din return
+
+```javascript
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  background: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    top: 0,
+    height: '100%',
+  },
+    bcg: {
+        padding: 80,
+        alignItems: 'center',
+        position: 'absolute',
+        width: '100%',
+        height: '100%',
+
+    },
+    title: {
+        fontSize: 32,
+        fontWeight: 'bold',
+        color: '#333',
+        marginBottom: 80,
+    },
+    input: {
+        height: 40,
+        borderColor: 'lightgray',
+        borderWidth: 1,
+        marginBottom: 20,
+        paddingHorizontal: 10,
+        width: '90%',
+        borderRadius: 20, // Makes the input round
+        backgroundColor: '#f9f9f9', // Light background color for minimalistic look
+    },
+    button: {
+        backgroundColor: '#FF0000', // Red color matching the logo
+        padding: 10,
+        borderRadius: 20,
+        alignItems: 'center',
+        width: '90%',
+        marginTop: 40,
+      },
+    buttonText: {
+        color: '#FFFFFF', // White text color
+        fontSize: 16,
+        fontWeight: 'bold',
+      },
+});
+```
+
+Indsæt følgende i din `return` function: 
+
+```javascript
+return (
+    <View style={styles.container}>
+        <Image source={require('??? - vi vil gerne have background her')} style={{width: '100%', height: '100%'}}/>
+        <LinearGradient
+        // Background Linear Gradient
+        colors={['rgba(255,255,255,0.10)', 'rgba(255,255,255,0.75)','rgba(255,255,255,1)', 'rgba(255,255,255,1)']}
+        style={styles.background}
+      />
+        <View style = {styles.bcg}>
+            <Image source={require('??? - vi vil gerne have logo her')} style={{width: 100, height: 100, marginBottom: 50}}/>
+            <Text style={styles.title}> INNT Map App </Text>
+            <TextInput style={styles.input} value={???} onChangeText={??? - vi vil gerne set vores værdi her} placeholder="lattitude"/>
+            <TextInput style={styles.input} value={???} onChangeText={??? - vi vil gerne set vores værdi her} placeholder="longitude"/>
+            <TouchableOpacity style={styles.button} onPress={???}>
+                <Text style={styles.buttonText}>Search</Text>
+            </TouchableOpacity>
+        </View>
+    </View>
+  );
+```
+
+Download `background.jpeg` og `logo.png` her fra repo og indsæt disse i dine `assests` før du importere dem som dit `Image source`
+
+I vores `TextInput`s vil vi gerne have vores værdi være lattitude og longitude samt set denne værdi når teksten ændres. 
+
+I vores `TouchableOpacity` vil vi gerne kalde på vores `addAndSaveMarker` function.
+
+Din `Home.js` skulle nu gerne være done. 
+
+<br></br>
+
+# Map.js (╯'□')╯︵🌍
+
+På vores `Map.js` vil vi nu gerne skabe vores map. 
+
+Start med imports:
+
+```javascript
+import React, { useEffect, useState } from 'react';
+import { StyleSheet, View, ActivityIndicator } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useFocusEffect } from '@react-navigation/native';
+```
+
+## const
+
+Lav nu 3 `const` med `useState`
+- `markers` med tomt array
+- `loading` med `useState(true)`
+- `initialRegion` med 4 værdier `latitude:???`, `longitude:???`, `latitudeDelta: 0.0922`, `longitudeDelta: 0.0421`
+
+Sæt dine longitude og latitude værdier til det som dit inital map skal vise - f.eks. KBH
+
+<br>
+
+## getMarkers 📌
+
+Vi skal nu lave en async function der henter vores map markers.
+
+Den skal bruge en `try - catch - finally` functionalitet som afventer vores `markers` fra vores `AsyncStorage`.
+
+Derefter, if vores `storedMarkers` ikke er `null` skal vi bruge `JSON.parse` disse markers. Dette skyldes at vores data er gemt som strings og vi skal convert dem tilbage til JavaScript objects. 
+
+Vi skal derefter opdatere vores `setMarkers` useState med disse parsed markers. 
+
+```javascript
+const getMarkers = async () => {
+    try {
+      const storedMarkers = await AsyncStorage.getItem('???');
+      if (storedMarkers ??? null) {
+        const parsedMarkers = JSON.parse(???);
+        setMarkers(???);
+        const latestMarker = parsedMarkers[parsedMarkers.length - 1];
+        setInitialRegion({
+          latitude: latestMarker.latitude,
+          longitude: latestMarker.longitude,
+          latitudeDelta: 0.0922,
+          longitudeDelta: 0.0421,
+        });
+      }
+    } catch (error) {
+      console.error('Error retrieving markers', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+```
+
+<br>
+
+## useFocusEffect & if(loading)
+
+vi skal nu lave en en function der aktivere vores `getMarkers`function hver gang brugeren kommer ind på vores Map.js screen. 
+
+Til dette vil vi bruge en `useFocusEffect`. Indsæt og ret denne kodeblok efter din `getMarkers`funktion. Vi vil gerne sætte vores loading til true da dette er den inital værdi hvorefter vi vil kører vores `getMarkers` function.
+
+```javascript
+useFocusEffect(
+  React.useCallback(() => {
+    setLoading(???);
+    ???();
+  }, [])
+);
+```
+
+Herefter vil gerne fortælle app'en hvad der skal ske mens der loades. ´
+```javascript
+if (loading) {
+  return (
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator size="large" color="#0000ff" />
+    </View>
+  );
+}
+```
+
+## return
+
+Indsæt følgende som det sidste på din Map.js og ret den til
+
+```javascript
+  return (
+    <View style={styles.container}>
+      <MapView
+        style={styles.???}
+        initialRegion={initialRegion}
+      >
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            coordinate={{ latitude: marker.???, longitude: marker.??? }}
+            pinColor="#FF0000" // Custom pin color
+          />
+        ))}
+      </MapView>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  map: {
+    ...StyleSheet.absoluteFillObject,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+});
+```
+
+<B>Du er nu done med din map app! (ノ^_^)ノ┻━┻ ┬─┬ ノ( ^_^ノ)</B> 
