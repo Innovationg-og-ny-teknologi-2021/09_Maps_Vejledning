@@ -175,9 +175,13 @@ Hint:
 Vi skal nu lave en addAndSaveMarker funktion.
 Denne funktion tilføjer en ny markør til en liste over eksisterende markører og gemmer den opdaterede liste ved hjælp af `AsyncStorage`.
 
+```javascript
+const addAndSaveMarker = async () => {
+```
+
 ### Trin 1: Opret en ny markør
 
-Start med at oprette en ny markør ved at bruge de aktuelle `latitude` og `longitude` værdier. Disse værdier omdannes til tal ved hjælp af `parseFloat()`.
+Start med inde i din `addAndSaveMarker` at oprette en ny markør ved at bruge de aktuelle `latitude` og `longitude` værdier. Disse værdier omdannes til tal ved hjælp af `parseFloat()`.
 
 ```javascript
 const newMarker = { latitude: parseFloat(???), longitude: parseFloat(???) };
